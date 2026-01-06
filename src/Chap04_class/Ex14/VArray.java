@@ -1,5 +1,4 @@
-package Chap04_class.Ex14;
-
+/*
 class VArray {
     private int addNum;
 
@@ -33,3 +32,6 @@ class VArray {
 
 }
 
+
+
+ */
