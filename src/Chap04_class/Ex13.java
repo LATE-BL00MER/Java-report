@@ -43,9 +43,9 @@ class Group {
 
     // 현재 줄의 예약 상태를 보여줌(ex. S>>--- --- 홍길동 --- ... )
     public void show() {
-        System.out.println(type + ">>");
+        System.out.print(type + ">> ");
         for (int i = 0; i < seats.length; i++) {
-            System.out.println(seats[i].getName() + " ");
+            System.out.print(seats[i].getName() + " ");
         }
         System.out.println();
     }
@@ -73,31 +73,92 @@ class Group {
 class ConcertApp {
     // S, A, B 세 개의 그룹 객체를 담는 배열
     private Group[] groups;
+    private Scanner sc = new Scanner(System.in);
+
+    public ConcertApp() {
+        groups = new Group[3];
+        groups[0] = new Group("S");
+        groups[1] = new Group("A");
+        groups[2] = new Group("B");
+    }
+
+    // 예약
+    public void reserve() {
+        System.out.print("좌석구분 S(1), A(2), B(3)>>");
+        int grade = sc.nextInt();
+
+        // 선택한 등급의 좌석 현황 출력
+        groups[grade - 1].show();
+
+        // 예약 정보 입력
+        System.out.print("이름>>");
+        String name = sc.next();
+        System.out.print("번호>>");
+        int seatNum = sc.nextInt();
+
+        // 입력한 값 저장하기
+        groups[grade - 1].reserve(name, seatNum);
+    }
+
+    // 모든 그룹 보여주기
+    public void showAll() {
+        for (int i = 0; i < groups.length; i++) {
+            groups[i].show(); // 각 등급(Group)의 show()를 호출해줌
+        }
+        System.out.println("<<<조회를 완료했습니다>>>");
+    }
+
+    public void cancel() {
+        System.out.print("좌석 S:1, A:2, B:3>>");
+        int choice = sc.nextInt();
+
+        groups[choice - 1].show(); // 선택한 등급의 현재 상태를 보여준다(누가 있는지)
+
+        // 취소할 이름 입력받기
+        System.out.print("이름>>");
+        String cancelName = sc.next();
+
+        // 해당 그룹에서 이름 찾아서 이름 지워야 함
+        // Group의 cancel 메서드는 찾으면 true, 못 찾으면 false리턴
+        boolean success = groups[choice - 1].cancel(cancelName);
+
+        if (success) {
+            return;
+        } else {
+            System.out.println("이름을 다시 확인해주세요!");
+        }
+    }
 
     // 전체 관리 및 실행
     public void run() {
-        Scanner sc = new Scanner(System.in);
-        int choice1;
-
         System.out.println("명품콘서트홀 예약 시스템입니다.");
         while(true) {
             System.out.print("예약:1, 조회:2, 취소:3, 끝내기:4>>");
-            choice1 = sc.nextInt();
+            int menu = sc.nextInt();
 
-            switch (choice1) {
-                case 1:
-                    int choice2;
-                    System.out.println("좌석구분 S(1), A(2), B(3)>>");
-                    choice2 = sc.nextInt();
+            if (menu == 4) break; // 끝내기
 
+            switch (menu) {
+                case 1: // 예약 로직
+                    // 좌석 등급 선택 -> 이름 입력 -> 번호 입력 순으로 구현
+                    reserve(); // 예약 메서드 호출
+                    break;
+                case 2: // 모든 그룹 show() 호출
+                    showAll(); // 조회 메서드
+                    break;
+                case 3: // 취소 로직 호출
+                    cancel();
+                    break;
+                default:
+                    System.out.println("잘못된 입력입니다.");
             }
         }
-
     }
 }
 
 public class Ex13 {
     public static void main(String[] args) {
-
+        ConcertApp concertApp = new ConcertApp();
+        concertApp.run();
     }
 }

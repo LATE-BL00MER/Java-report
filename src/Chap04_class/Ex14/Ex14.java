@@ -1,4 +1,3 @@
-/*
 package Chap04_class.Ex14;
 
 public class Ex14 {
@@ -26,7 +25,3 @@ public class Ex14 {
         v.printAll();
     }
 }
-
- */
-
-
