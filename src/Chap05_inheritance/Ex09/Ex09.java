@@ -23,10 +23,22 @@ class BaseArray {
 }
 
 class BinaryArray extends BaseArray {
+    private int threshold; // 임계값을 저장할 필드
 
-    public BinaryArray(int num) {
-        super()
+    public BinaryArray(int size, int threshold) {
+        super(size); // 부모 클래스(BaseArray)의 생성자를 호출해 배열 크기 설정
+        this.threshold = threshold; // 전달받은 임계값을 필드에 저장
     }
+
+    @Override
+    public void add(int n) {
+        if (n >= threshold) { // 입력한 값이 임계값(50)보다 크거나 같으면
+            super.add(1); // 부모 클래스의 add 호출하고 1 넣기
+        } else {
+            super.add(0); // 작으면 0
+        }
+    }
+
 }
 
 public class Ex09 {
